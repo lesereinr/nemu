@@ -1,0 +1,61 @@
+#include "cpu/instr.h"
+static void instr_execute_1op() 
+{
+	opr_dest.type=OPR_MEM;
+	opr_dest.sreg=SREG_DS;
+	opr_dest.addr=cpu.esp;
+	operand_read(&opr_dest);
+	opr_src.val=opr_dest.val;
+	operand_write(&opr_src);
+	cpu.esp+=4;
+}
+make_instr_impl_1op(pop, r, v)
+make_instr_func(popa)
+{
+    OPERAND temp;
+    temp.data_size=32;
+    temp.type=OPR_MEM;
+    temp.sreg=SREG_DS;
+    //edi
+    temp.addr=cpu.esp;
+    operand_read(&temp);
+    cpu.edi=temp.val;
+    cpu.esp+=4;
+    //esi
+    temp.addr=cpu.esp;
+    operand_read(&temp);
+    cpu.esi=temp.val;
+    cpu.esp+=4;
+    //ebp
+    temp.addr=cpu.esp;
+    operand_read(&temp);
+    cpu.ebp=temp.val;
+    cpu.esp+=4;
+    //esp(xxx)
+    //temp.addr=cpu.esp;
+    //operand_read(&temp);
+    //cpu.edi=temp.val;
+    cpu.esp+=4;
+    //ebx
+    temp.addr=cpu.esp;
+    operand_read(&temp);
+    cpu.ebx=temp.val;
+    cpu.esp+=4;
+    //edx
+    temp.addr=cpu.esp;
+    operand_read(&temp);
+    cpu.edx=temp.val;
+    cpu.esp+=4;
+    //ecx
+    temp.addr=cpu.esp;
+    operand_read(&temp);
+    cpu.ecx=temp.val;
+    cpu.esp+=4;
+    //eax
+    temp.addr=cpu.esp;
+    operand_read(&temp);
+    cpu.eax=temp.val;
+    cpu.esp+=4;
+    print_asm_0("popa","",1);
+    return 1;
+}
